@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>edit_form</class>
+ <widget class="QDialog" name="edit_form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>395</width>
+    <height>352</height>
+   </rect>
+  </property>
+  <property name="font">
+   <font>
+    <pointsize>12</pointsize>
+   </font>
+  </property>
+  <property name="windowTitle">
+   <string>Edit password data</string>
+  </property>
+  <widget class="QDialogButtonBox" name="edit_buttons">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>310</y>
+     <width>371</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+   <property name="standardButtons">
+    <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+   </property>
+  </widget>
+  <widget class="QWidget" name="formLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>9</y>
+     <width>371</width>
+     <height>291</height>
+    </rect>
+   </property>
+   <layout class="QFormLayout" name="edit_layout">
+    <item row="0" column="0">
+     <widget class="QLabel" name="label_nickname">
+      <property name="focusPolicy">
+       <enum>Qt::TabFocus</enum>
+      </property>
+      <property name="text">
+       <string>&amp;Nickname:</string>
+      </property>
+      <property name="buddy">
+       <cstring>lineedit_nickname</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QLineEdit" name="lineedit_nickname"/>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="label_username">
+      <property name="text">
+       <string>&amp;Username:</string>
+      </property>
+      <property name="buddy">
+       <cstring>lineedit_username</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QLabel" name="label_hostname">
+      <property name="text">
+       <string>&amp;Hostname:</string>
+      </property>
+      <property name="buddy">
+       <cstring>lineedit_hostname</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0">
+     <widget class="QLabel" name="label_iteration">
+      <property name="text">
+       <string>&amp;Iteration:</string>
+      </property>
+      <property name="buddy">
+       <cstring>spinbox_iteration</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="0">
+     <widget class="QLabel" name="label_hint">
+      <property name="text">
+       <string>&amp;Hint:</string>
+      </property>
+      <property name="buddy">
+       <cstring>lineedit_hint</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="0">
+     <widget class="QLabel" name="label_substring_start">
+      <property name="text">
+       <string>Substring &amp;start:</string>
+      </property>
+      <property name="buddy">
+       <cstring>spinbox_substring_start</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="1">
+     <widget class="QSpinBox" name="spinbox_substring_start"/>
+    </item>
+    <item row="6" column="1">
+     <widget class="QSpinBox" name="spinbox_substring_end">
+      <property name="value">
+       <number>15</number>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="0">
+     <widget class="QLabel" name="label_substring_end">
+      <property name="text">
+       <string>Substring &amp;end:</string>
+      </property>
+      <property name="buddy">
+       <cstring>spinbox_substring_end</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="0">
+     <widget class="QLabel" name="label_base">
+      <property name="text">
+       <string>&amp;Base:</string>
+      </property>
+      <property name="buddy">
+       <cstring>combobox_base</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="1">
+     <widget class="QComboBox" name="combobox_base"/>
+    </item>
+    <item row="8" column="0">
+     <widget class="QLabel" name="label_special_char">
+      <property name="text">
+       <string>Special &amp;char:</string>
+      </property>
+      <property name="buddy">
+       <cstring>checkbox_special_char</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QLineEdit" name="lineedit_username"/>
+    </item>
+    <item row="2" column="1">
+     <widget class="QLineEdit" name="lineedit_hostname"/>
+    </item>
+    <item row="3" column="1">
+     <widget class="QSpinBox" name="spinbox_iteration">
+      <property name="minimum">
+       <number>1</number>
+      </property>
+      <property name="maximum">
+       <number>999999999</number>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="1">
+     <widget class="QLineEdit" name="lineedit_hint"/>
+    </item>
+    <item row="8" column="1">
+     <widget class="QCheckBox" name="checkbox_special_char">
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <tabstops>
+  <tabstop>label_nickname</tabstop>
+  <tabstop>lineedit_nickname</tabstop>
+  <tabstop>lineedit_username</tabstop>
+  <tabstop>lineedit_hostname</tabstop>
+  <tabstop>spinbox_iteration</tabstop>
+  <tabstop>lineedit_hint</tabstop>
+  <tabstop>spinbox_substring_start</tabstop>
+  <tabstop>spinbox_substring_end</tabstop>
+  <tabstop>combobox_base</tabstop>
+  <tabstop>checkbox_special_char</tabstop>
+ </tabstops>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>edit_buttons</sender>
+   <signal>accepted()</signal>
+   <receiver>edit_form</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>248</x>
+     <y>254</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>157</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>edit_buttons</sender>
+   <signal>rejected()</signal>
+   <receiver>edit_form</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>316</x>
+     <y>260</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>286</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
