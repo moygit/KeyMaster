@@ -87,7 +87,7 @@ class MainController(QtWidgets.QDialog):
         self.ui.combobox_password_nicknames.addItems(nicknames)
         if nicknames:   # have passwords, can do stuff with them
             _set_widgets_enabled(True)
-            self.ui.lineedit_enter_proto.setFocus()
+            self.ui.combobox_password_nicknames.setFocus()
         else:           # no passwords yet, can only create new
             _set_widgets_enabled(False)
             self.ui.button_new.setFocus()
