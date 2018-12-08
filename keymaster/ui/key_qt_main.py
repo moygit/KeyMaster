@@ -6,10 +6,12 @@ pylint command-line:
 pylint --max-line-length=120 --extension-pkg-whitelist=PyQt5 key_qt_main.py
 """
 
+import argparse
 import sys
 
 from PyQt5 import QtWidgets
 
+from keymaster.key_password import DEFAULT_DB_PATH
 from keymaster.key_password import PasswordDB
 from keymaster.ui.key_qt_edit import EditController
 from keymaster.ui.ui_main import Ui_main_form
@@ -29,20 +31,25 @@ class MainController(QtWidgets.QDialog):
         self.edit_form = EditController()
         self.pass_db, self.passwords_dic = None, None
 
-    def start(self, pass_db=None, pass_dic=None):
+    def start(self, pass_db, pass_dic):
         """Real initialization: ui, passwords-list, connect callbacks"""
         self.ui.setupUi(self)
         self.edit_form.start()
         self._connect_callbacks()
-        if pass_db is None and pass_dic is None:
-            self.pass_db, self.passwords_dic = self._get_data()
-        else:
-            self.pass_db, self.passwords_dic = pass_db, pass_dic
-        if self.pass_db is None:
-            sys.exit(-1)
+        self.pass_db, self.passwords_dic = pass_db, pass_dic
         self._populate_pw_nicknames_list()
 
-    def _get_data(self):
+    @staticmethod
+    def create(app, pass_db=None, pass_dic=None, db_path=None):
+        """We're given either (in prod) a db_path that we use to get a pass_db
+        and pass_dic, or (in test) a pre-built pass_db and pass_dic."""
+        main_form = MainController(app)
+        if db_path is not None:
+            pass_db, pass_dic = main_form._get_data(db_path)
+        main_form.start(pass_db, pass_dic)
+        return main_form
+
+    def _get_data(self, db_path):
         """Create communications methods for the back-end get_data and call it."""
         def ask_to_create_new():
             """Ask user if we want to create a new password db."""
@@ -60,8 +67,7 @@ class MainController(QtWidgets.QDialog):
             msg_box.setText("Error opening passwords db.  Exiting.")
             msg_box.setStandardButtons(QtWidgets.QMessageBox.Ok)
             msg_box.exec_()
-            return
-        return PasswordDB.get_data(ask_to_create_new, error_getting_db)
+        return PasswordDB.get_data(ask_to_create_new, error_getting_db, db_path)
 
     def _populate_pw_nicknames_list(self):
         """Populate the main drop-down containing all password nicknames.
@@ -252,11 +258,19 @@ class MainController(QtWidgets.QDialog):
             self.ui.lineedit_enter_proto.setEchoMode(QtWidgets.QLineEdit.Password)
 
 
+def parse_args(command_line):
+    """See if user wants a non-default database."""
+    parser = argparse.ArgumentParser(description="Manage passwords easily and securely")
+    parser.add_argument("-d", "--db-path", default=DEFAULT_DB_PATH,
+                        help="Alternate passwords-database path")
+    return parser.parse_args(command_line)
+
+
 def main():
     """Really, pylint?"""
     app = QtWidgets.QApplication(sys.argv)
-    main_form = MainController(app)
-    main_form.start()
+    args = parse_args(sys.argv[1:])
+    main_form = MainController.create(app, db_path=args.db_path)
     main_form.show()
     sys.exit(app.exec_())
 

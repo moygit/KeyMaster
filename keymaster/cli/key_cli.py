@@ -27,6 +27,7 @@ from collections import OrderedDict
 import getpass
 import sys
 
+from keymaster.key_password import DEFAULT_DB_PATH
 from keymaster.key_password import Password
 from keymaster.key_password import PasswordDB
 
@@ -46,13 +47,13 @@ _MSG_PROTO_PW_MISMATCH = "The two proto-passwords don't match.  Please try again
 def main():
     """Do it!"""
     args = parse_args(sys.argv[1:])
-    pass_db, passwords_dic = _get_data()
+    pass_db, passwords_dic = _get_data(args.db_path)
     if pass_db is None:
         sys.exit(1)
     args.func(args.nickname, pass_db, passwords_dic)
 
 
-def _get_data():
+def _get_data(db_path):
     """Create communications methods for the back-end get_data and call it."""
     def ask_to_create_new():
         """Is it okay to write a new db?"""
@@ -62,8 +63,7 @@ def _get_data():
     def error_getting_db():
         """Couldn't get a handle to the database."""
         print(_MSG_ERROR_OPENING_DB, file=sys.stderr)
-        return
-    return PasswordDB.get_data(ask_to_create_new, error_getting_db)
+    return PasswordDB.get_data(ask_to_create_new, error_getting_db, db_path)
 
 
 def create_pass(nick, pass_db, pass_dic):
@@ -215,13 +215,15 @@ COMMANDS_MAP = [("create", {"func": create_pass, "desc": "create a new password"
 def parse_args(command_line):
     """Redirect each subcommand to the appropriate function."""
     parser = argparse.ArgumentParser(description="Manage passwords easily and securely")
+    parser.add_argument("-d", "--db-path", default=DEFAULT_DB_PATH,
+                        help="Alternate passwords-database path")
     subparsers = parser.add_subparsers(title="commands", description="valid subcommands", help="additional help")
     for cmd, cmd_data in OrderedDict(COMMANDS_MAP).items():
         subparser = subparsers.add_parser(cmd, description=cmd_data["desc"])
         subparser.add_argument("nickname", nargs="?", default=None)
         subparser.set_defaults(func=cmd_data["func"])
     parsed_args = parser.parse_args(command_line)
-    if parsed_args == argparse.Namespace():
+    if not parsed_args.func:
         parser.print_help()
         parser.exit()
     return parsed_args

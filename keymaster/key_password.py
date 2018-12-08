@@ -11,7 +11,7 @@ import sqlite3
 from xdg import XDG_CONFIG_HOME
 
 
-_DEFAULT_DB_PATH = Path(XDG_CONFIG_HOME, "keymaster", ".passwords.db")
+DEFAULT_DB_PATH = Path(XDG_CONFIG_HOME, "keymaster", ".passwords.db")
 
 _DROP_PASSWORDS_TABLE_SCHEMA = """drop table if exists passwords;"""
 _CREATE_PASSWORDS_TABLE_SCHEMA = """
@@ -108,7 +108,7 @@ class PasswordDB:
             self.conn.commit()
 
     @staticmethod
-    def get_data(ask_to_create_new_func, error_getting_db_func, db_name=_DEFAULT_DB_PATH):
+    def get_data(ask_to_create_new_func, error_getting_db_func, db_name=DEFAULT_DB_PATH):
         """Open the database and get passwords dictionary."""
         # Try to open the database:
         root = os.path.dirname(db_name)
@@ -144,7 +144,7 @@ class PasswordDB:
     def get_all_password_objects(self):
         """Get all passwords in password database."""
         self.cur.execute(_SQL_GET_PASS)
-        return dict([(row[0], Password(*row)) for row in self.cur.fetchall()])
+        return {row[0]: Password(*row) for row in self.cur.fetchall()}
 
     def create_new_password(self, pw_obj):
         """Create a new password in the password database."""
@@ -152,6 +152,7 @@ class PasswordDB:
         self.conn.commit()
 
     def _run_create(self, pw_obj):
+        """Run the create command against the database."""
         self.cur.execute(_SQL_INS_PASS,                         # Fields could be untrusted user input
                          (pw_obj.nickname, pw_obj.username, pw_obj.hostname,
                           pw_obj.special_char, pw_obj.base, pw_obj.iteration,
@@ -174,6 +175,7 @@ class PasswordDB:
         self.conn.commit()
 
     def _run_delete(self, nickname):
+        """Delete a password by nickname."""
         self.cur.execute(_SQL_DEL_PASS, (nickname,))            # nickname could be untrusted user input
 
     def close_db(self):

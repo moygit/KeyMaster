@@ -34,8 +34,7 @@ def _get_test_db():
 def test_do_nothing():
     """Just create the form and reject it (like pressing escape)."""
     # Given:
-    form = MainController(APP)
-    form.start(*_get_test_db())
+    form = MainController.create(APP, *_get_test_db())
     # When we do nothing:
     form.reject()
     # Then check defaults and form returns 1 because we ok'ed:
@@ -45,8 +44,7 @@ def test_do_nothing():
 def test_hint():
     """Use the test db and verify the hint for one password."""
     # Given:
-    form = MainController(APP)
-    form.start(*_get_test_db())
+    form = MainController.create(APP, *_get_test_db())
     # When we get the hint:
     form.ui.combobox_password_nicknames.setCurrentText(NICK1)
     QTest.mouseClick(form.ui.button_hint, Qt.LeftButton)
@@ -57,8 +55,7 @@ def test_hint():
 def test_get():
     """Use the test db and verify the real password for one password."""
     # Given:
-    form = MainController(APP)
-    form.start(*_get_test_db())
+    form = MainController.create(APP, *_get_test_db())
     # When we get the password (it's ok to leave the proto blank):
     form.ui.combobox_password_nicknames.setCurrentText(NICK2)
     QTest.mouseClick(form.ui.button_get, Qt.LeftButton)
@@ -69,8 +66,7 @@ def test_get():
 def test_delete():
     """Use the test db and verify deleting one password."""
     # Given:
-    form = MainController(APP)
-    form.start(*_get_test_db())
+    form = MainController.create(APP, *_get_test_db())
     form.ui.button_delete.clicked.disconnect(form.delete_password)
     form.ui.button_delete.clicked.connect(lambda: form.delete_password(confirmed=True))
     # When we get the password (it's ok to leave the proto blank):
@@ -87,8 +83,7 @@ def test_create():
     """Create a new password."""
     # Given:
     nick, user, host, iteration, hint = "nick", "user", "host.com", 3, "hint"
-    form = MainController(APP)
-    form.start(PasswordDB(":memory:", True), {})
+    form = MainController.create(APP, PasswordDB(":memory:", True), {})
     QTest.mouseClick(form.ui.button_new, Qt.LeftButton)
     # Now populate the edit form:
     form.edit_form.ui.lineedit_nickname.setText(nick)
