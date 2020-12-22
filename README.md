@@ -95,3 +95,12 @@ It thus solves all four problems listed above:
   clears the clipboard.
 
   ![get password](images/p05.png "Get password in clipboard")
+
+<a name="install"></a>
+### How to Install this Program
+
+Clone this repo and run `setup.py` as usual:
+
+    git clone https://github.com/moygit/keymaster
+    cd keymaster
+    python setup.py install --user
