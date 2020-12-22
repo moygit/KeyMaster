@@ -223,7 +223,7 @@ def parse_args(command_line):
         subparser.add_argument("nickname", nargs="?", default=None)
         subparser.set_defaults(func=cmd_data["func"])
     parsed_args = parser.parse_args(command_line)
-    if not parsed_args.func:
+    if list(vars(parsed_args).keys()) == ["db_path"]: # the only argument is the db_path (which we added)
         parser.print_help()
         parser.exit()
     return parsed_args
